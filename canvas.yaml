@@ -1,0 +1,22 @@
+preset: package
+
+namespace: Joserick\Filament\DevTool
+
+paths:
+  src: src
+  resource: resources
+
+console:
+  namespace: Joserick\Filament\DevTool\Commands
+
+model:
+  namespace: Joserick\Filament\DevTool\Models
+
+provider:
+  namespace: Joserick\Filament\DevTool
+
+testing:
+  namespace: Joserick\Filament\DevTool\Tests
+
+generators:
+  - Orchestra\Canvas\Commands\ConsoleGenerator

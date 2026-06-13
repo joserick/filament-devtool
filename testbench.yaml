@@ -1,0 +1,4 @@
+providers:
+  - Joserick\Filament\DevTool\DevToolServiceProvider
+  - Filament\FilamentServiceProvider
+  - Workbench\App\Providers\WorkbenchServiceProvider

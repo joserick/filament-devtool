@@ -1,0 +1,87 @@
+{
+    "name": "joserick/filament-devtool",
+    "description": "A development tool for FilamentPHP",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "filament",
+        "filamentphp",
+        "laravel-filament",
+        "dev"
+    ],
+    "require": {
+        "php": "^8.3",
+        "composer-runtime-api": "^2.2",
+        "orchestra/sidekick": "^1.2",
+        "orchestra/workbench": "^11.0"
+    },
+    "require-dev": {
+        "filament/blueprint": "^2.1",
+        "filament/filament": "^5.0",
+        "laravel/boost": "^2.4",
+        "laravel/pint": "^1.29",
+        "laravel/sail": "^1.0",
+        "orchestra/pest-plugin-testbench": "^4.1",
+        "orchestra/testbench": "^11.1",
+        "phpstan/phpstan": "^2.2"
+    },
+    "repositories": [
+        {
+            "name": "filament",
+            "type": "composer",
+            "url": "https://packages.filamentphp.com/composer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Joserick\\Filament\\DevTool\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Joserick\\Filament\\DevTool\\DevToolServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": [
+            "@php vendor/bin/pint --ansi",
+            "@php vendor/bin/phpstan analyse --verbose --ansi"
+        ],
+        "test": "@php vendor/bin/pest",
+        "ci": [
+            "@lint",
+            "@test"
+        ]
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
