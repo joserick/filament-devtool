@@ -25,13 +25,6 @@
         "orchestra/testbench": "^11.1",
         "phpstan/phpstan": "^2.2"
     },
-    "repositories": [
-        {
-            "name": "filament",
-            "type": "composer",
-            "url": "https://packages.filamentphp.com/composer"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Joserick\\Filament\\DevTool\\": "src/"
