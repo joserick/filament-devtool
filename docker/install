@@ -43,7 +43,7 @@ docker run --rm \
     -v "$(pwd)":/opt \
     -w /opt \
     laravelsail/php84-composer:latest \
-    bash -c "git config --global --add safe.directory /opt && composer install --dev --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-intl"
+    bash -c "git config --global --add safe.directory /opt && composer install --dev --prefer-dist --optimize-autoloader --ignore-platform-req=ext-intl"
 
 if [ $? -ne 0 ]; then
     echo "Composer install failed."
