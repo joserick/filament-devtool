@@ -1,108 +1,109 @@
+
 # Filament DevTool
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/joserick/filament-devtool.svg)](https://packagist.org/packages/joserick/filament-devtool)
 [![License](https://img.shields.io/packagist/l/joserick/filament-devtool.svg)](https://github.com/joserick/filament-devtool/blob/main/LICENSE)
 
-Herramienta de desarrollo para agilizar la creación de componentes de **FilamentPHP v5** dentro de paquetes de Laravel. Reemplaza los comandos `make:` originales de Filament con versiones que generan el código directamente en la estructura `src/` del paquete en lugar de hacerlo en el esqueleto de la aplicación Laravel.
+Filament DevTool is an agile tool that enables the creation of **FilamentPHP v5** components within Laravel packages under development. It replaces Filament's original `make:` commands with versions that generate code directly in the package's `src/` structure instead of the Laravel application skeleton.
 
-## Características
+## Features
 
-- 🚀 **Todos los comandos `make:` de Filament** reescritos para desarrollo de paquetes
-- 📦 Generación de archivos en `src/` usando [Orchestra Canvas](https://github.com/orchestral/canvas)
-- 🐳 Entorno de desarrollo con Docker/Sail incluido
-- 🧪 Integración con [Orchestra Testbench](https://github.com/orchestral/testbench) para testing de paquetes
-- ⚡ Sin necesidad de una aplicación Laravel completa para desarrollar componentes
+- 🚀 **All Filament `make:` commands** rewritten for package development
+- 📦 File generation in `src/` using [Orchestra Canvas](https://github.com/orchestral/canvas)
+- 🐳 Docker/Sail development environment included
+- 🧪 Integration with [Orchestra Testbench](https://github.com/orchestral/testbench) for package testing
+- ⚡ No need for a full Laravel application to develop components
 
-## Requisitos
+## Requirements
 
-- PHP 8.3 o superior
+- PHP 8.3 or higher
 - [Composer](https://getcomposer.org/) 2.2+
-- [Docker](https://www.docker.com/) (para el entorno de desarrollo con Sail)
+- [Docker](https://www.docker.com/) (for the Sail development environment)
 
-## Instalación
+## Installation
 
-### Como dependencia de desarrollo en tu paquete
+### As a development dependency in your package
 
 ```bash
 composer require --dev joserick/filament-devtool
 ```
 
-El paquete se registrará automáticamente gracias al descubrimiento de Laravel.
+The package will be automatically registered thanks to Laravel's package discovery.
 
-### Configurar el entorno de desarrollo
+### Using the Sail/Docker development environment
 
-Clona el repositorio y ejecuta el script de instalación:
-
-```bash
-git clone https://github.com/joserick/filament-devtool.git
-cd filament-devtool
-bash install.sh
-```
-
-El script `install.sh`:
-
-1. Instala las dependencias de Composer usando Docker
-2. Construye la imagen Sail para PHP 8.5
-3. Configura los permisos del directorio `vendor/`
-
-Una vez finalizado, inicia los contenedores:
+Run the installation script directly with `curl`:
 
 ```bash
-vendor/bin/sail up -d
+curl -s https://filament-devtool.joserick.com/install | bash
 ```
 
-## Uso
+The `install.sh` script:
 
-### Comandos disponibles
+1. Clones the `joserick/filament-devtool` repository
+2. Copies `stubs/compose.stub` to `compose.yml`
+3. Installs Composer dependencies using Docker
+4. Builds the Sail image for PHP 8.5
+5. Sets up permissions for the `vendor/` directory
 
-Todos los comandos `make:` de Filament están disponibles a través de Canvas. Ejecútalos usando el alias `canvas`:
+Once finished, start the containers:
+
+```bash
+cd filament-devtool && vendor/bin/sail up -d
+```
+
+## Usage
+
+### Available commands
+
+All Filament `make:` commands are available through Canvas. Run them using the `canvas` alias:
 
 ```bash
 vendor/bin/sail php vendor/bin/canvas
 ```
 
-#### Comandos incluidos
+#### Included commands
 
-| Comando | Descripción |
+| Command | Description |
 |---|---|
-| `make:filament-resource` | Crea un Resource de panel |
-| `make:filament-page` | Crea una Page de panel |
-| `make:filament-widget` | Crea un Widget |
-| `make:filament-cluster` | Crea un Cluster de panel |
-| `make:filament-relation-manager` | Crea un Relation Manager |
-| `make:form-field` | Crea un campo de formulario |
-| `make:form` | Crea un componente de formulario |
-| `make:livewire-form` | Crea un formulario Livewire |
-| `make:rich-content-custom-block` | Crea un bloque personalizado para Rich Content |
-| `make:table-column` | Crea una columna de tabla |
-| `make:table` | Crea un componente de tabla |
-| `make:livewire-table` | Crea una tabla Livewire |
-| `make:infolist-entry` | Crea una entrada de Infolist |
-| `make:schema-component` | Crea un componente de Schema |
-| `make:schema` | Crea un Schema |
-| `make:livewire-schema` | Crea un Schema Livewire |
-| `make:filament-importer` | Crea un Importer |
-| `make:filament-exporter` | Crea un Exporter |
-| `make:filament-issue` | Crea un Issue |
+| `make:filament-resource` | Creates a panel Resource |
+| `make:filament-page` | Creates a panel Page |
+| `make:filament-widget` | Creates a Widget |
+| `make:filament-cluster` | Creates a panel Cluster |
+| `make:filament-relation-manager` | Creates a Relation Manager |
+| `make:form-field` | Creates a form field |
+| `make:form` | Creates a form component |
+| `make:livewire-form` | Creates a Livewire form |
+| `make:rich-content-custom-block` | Creates a custom block for Rich Content |
+| `make:table-column` | Creates a table column |
+| `make:table` | Creates a table component |
+| `make:livewire-table` | Creates a Livewire table |
+| `make:infolist-entry` | Creates an Infolist entry |
+| `make:schema-component` | Creates a Schema component |
+| `make:schema` | Creates a Schema |
+| `make:livewire-schema` | Creates a Livewire Schema |
+| `make:filament-importer` | Creates an Importer |
+| `make:filament-exporter` | Creates an Exporter |
+| `make:filament-issue` | Creates an Issue |
 
-#### Ejemplos
+#### Examples
 
 ```bash
-# Crear un recurso
+# Create a resource
 vendor/bin/sail php vendor/bin/canvas make:filament-resource User
 
-# Crear un campo de formulario
+# Create a form field
 vendor/bin/sail php vendor/bin/canvas make:form-field ColorPicker
 
-# Crear una página
+# Create a page
 vendor/bin/sail php vendor/bin/canvas make:filament-page Settings
 ```
 
-Los archivos generados se colocarán automáticamente en `src/` siguiendo la estructura del paquete.
+Generated files are automatically placed in `src/` following the package structure (`canvas.yaml`).
 
-### Alias de terminal recomendados
+### Recommended terminal aliases
 
-Agrega estos alias a tu `~/.bashrc` o `~/.zshrc`:
+Add these aliases to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 alias sail='vendor/bin/sail'
@@ -112,13 +113,13 @@ alias testbench='vendor/bin/sail php vendor/bin/testbench'
 
 ### Testing
 
-Ejecuta las pruebas con Pest:
+Run tests with Pest:
 
 ```bash
 vendor/bin/sail php vendor/bin/pest
 ```
 
-Para ejecutar un archivo de prueba específico:
+To run a specific test file:
 
 ```bash
 vendor/bin/sail php vendor/bin/pest tests/Feature/MakeResourceCommandTest.php
@@ -126,7 +127,7 @@ vendor/bin/sail php vendor/bin/pest tests/Feature/MakeResourceCommandTest.php
 
 ### Testbench
 
-Usa Testbench como alias de Artisan para interactuar con la aplicación Laravel esqueleto:
+Use Testbench as an Artisan alias to interact with the Laravel skeleton application:
 
 ```bash
 vendor/bin/sail php vendor/bin/testbench make:model User
@@ -134,27 +135,27 @@ vendor/bin/sail php vendor/bin/testbench migrate
 vendor/bin/sail php vendor/bin/testbench route:list
 ```
 
-## Estructura del proyecto
+## Project structure
 
 ```
-├── src/                          # Código fuente del paquete
+├── src/                          # Package source code
 │   ├── DevToolServiceProvider.php
-│   └── Commands/                 # Comandos make: reescritos
+│   └── Commands/                 # Rewritten make: commands
 │       ├── MakeResourceCommand.php
 │       ├── MakeFieldCommand.php
 │       ├── MakeTableCommand.php
 │       └── ...
-├── workbench/                    # App Laravel skeleton para testing
+├── workbench/                    # Laravel skeleton app for testing
 │   ├── app/
 │   ├── database/
 │   └── routes/
-├── vendor/                       # Dependencias
-├── canvas.yaml                   # Configuración de Orchestra Canvas
-├── testbench.yaml                # Configuración de Orchestra Testbench
-├── compose.yml                   # Docker Compose para Sail
-└── install.sh                    # Script de instalación
+├── vendor/                       # Dependencies
+├── canvas.yaml                   # Orchestra Canvas configuration
+├── testbench.yaml                # Orchestra Testbench configuration
+├── compose.yml                   # Docker Compose for Sail
+└── install.sh                    # Installation script
 ```
 
-## Licencia
+## License
 
 MIT License © [Joserick](https://github.com/joserick)

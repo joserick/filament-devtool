@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+REPO_URL="https://github.com/joserick/filament-devtool.git"
+PROJECT_DIR="filament-devtool"
+
+# Ensure Docker is running
+docker info > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Docker is not running."
+    exit 1
+fi
+
+# Ensure Git is installed
+if ! command -v git > /dev/null 2>&1; then
+    echo "Git is not installed."
+    exit 1
+fi
+
+# Clone the repository
+echo -e "${BOLD}Cloning ${REPO_URL}...${NC}"
+git clone "${REPO_URL}" "${PROJECT_DIR}"
+
+if [ $? -ne 0 ]; then
+    echo "Failed to clone repository."
+    exit 1
+fi
+
+cd "${PROJECT_DIR}"
+
+# Copy compose stub
+echo -e "${BOLD}Copying stubs/compose.stub to compose.yml...${NC}"
+cp stubs/compose.stub compose.yml
+
+# Install Composer dependencies via Docker
+echo -e "${BOLD}Installing Composer dependencies via Docker...${NC}"
+
+docker run --rm \
+    --pull=always \
+    -v "$(pwd)":/opt \
+    -w /opt \
+    laravelsail/php84-composer:latest \
+    bash -c "git config --global --add safe.directory /opt && composer install --dev --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-intl"
+
+if [ $? -ne 0 ]; then
+    echo "Composer install failed."
+    exit 1
+fi
+
+# Fix permissions so the host user owns vendor/
+if command -v doas &>/dev/null; then
+    SUDO="doas"
+elif command -v sudo &>/dev/null; then
+    SUDO="sudo"
+fi
+
+if [ -n "$SUDO" ]; then
+    $SUDO chown -R $USER: .
+fi
+
+echo ""
+echo -e "${BOLD}Building sail-app image from vendor/laravel/sail...${NC}"
+if ! docker image inspect sail-8.5/app > /dev/null 2>&1; then
+    echo -e "${BOLD}Building sail-app base image...${NC}"
+    docker build \
+        --build-arg WWWGROUP="${WWWGROUP}" \
+        -t sail-8.5/app \
+        vendor/laravel/sail/runtimes/8.5/
+else
+    echo -e "${BOLD}sail-8.5/app image already exists, skipping...${NC}"
+fi
+
+if [ $? -ne 0 ]; then
+    echo "sail-app build failed."
+    exit 1
+fi
+
+echo ""
+echo -e "${BOLD}Building workspace Docker image...${NC}"
+./vendor/bin/sail build
+
+echo ""
+echo -e "${CYAN}${BOLD}Setup complete! Get started with:${NC}"
+echo -e "  ${BOLD}cd ${PROJECT_DIR} && ./vendor/bin/sail up -d${NC}"

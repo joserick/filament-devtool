@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+if [ -n "$SUPERVISOR_PHP_USER" ] && [ "$SUPERVISOR_PHP_USER" != "sail" ]; then
+    echo "You should set SUPERVISOR_PHP_USER to 'sail'."
+    exit 1
+fi
+
+SUPERVISOR_PHP_USER=sail
+export SUPERVISOR_PHP_USER
+
+if [ ! -z "$WWWUSER" ]; then
+    usermod -u $WWWUSER sail
+fi
+
+if [ ! -d /.composer ]; then
+    mkdir /.composer
+fi
+
+chmod -R ugo+rw /.composer
+
+# Install Composer dependencies if vendor/ does not exist yet
+if [ ! -d /var/www/html/vendor ]; then
+    echo "vendor/ not found — running composer install..."
+    gosu sail composer install --working-dir=/var/www/html --no-interaction --prefer-dist
+fi
+
+# Scaffold workbench directory on first run
+if [ ! -d /var/www/html/workbench ]; then
+    echo "workbench/ not found — running workbench:install..."
+    gosu sail /var/www/html/vendor/bin/testbench workbench:install --no-interaction
+fi
+
+# Run workbench:build on every start (applies pending migrations, publishes assets)
+gosu sail /var/www/html/vendor/bin/testbench workbench:build --no-interaction
+
+# Scaffold skeleton directory on first run for package context access to Laravel structure
+if [ ! -e /var/www/html/skeleton ]; then
+    echo "skeleton/ not found — running devtool:boost-skeleton..."
+    gosu sail /var/www/html/vendor/bin/canvas devtool:boost-skeleton --no-interaction
+fi
+
+# Install Node dependencies if package.json exists but node_modules/ does not
+if [ -f /var/www/html/package.json ] && [ ! -d /var/www/html/node_modules ]; then
+    echo "node_modules/ not found — running npm install..."
+    gosu sail npm install --prefix /var/www/html
+fi
+
+if [ $# -gt 0 ]; then
+    exec gosu sail "$@"
+else
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi

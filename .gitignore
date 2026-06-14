@@ -32,6 +32,4 @@ opencode.json
 skeleton
 Thumbs.db
 workbench
-install.sh
 compose.yml
-docker/
