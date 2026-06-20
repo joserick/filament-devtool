@@ -58,7 +58,7 @@ class MakeRelationManagerCommand extends \Filament\Commands\MakeRelationManagerC
             // load the file based on the PSR-4 mapping.
             $preset = $this->generatorPreset();
             $relativePath = str($fqn)
-                ->after($preset->rootNamespace() . '\\')
+                ->after($preset->rootNamespace().'\\')
                 ->replace('\\', '/')
                 ->append('.php')
                 ->toString();
@@ -80,7 +80,7 @@ class MakeRelationManagerCommand extends \Filament\Commands\MakeRelationManagerC
             $fqn2 = "{$resourceNamespace2}\\{$resourceBasename}";
 
             $relativePath2 = str($fqn2)
-                ->after($preset->rootNamespace() . '\\')
+                ->after($preset->rootNamespace().'\\')
                 ->replace('\\', '/')
                 ->append('.php')
                 ->toString();
@@ -178,7 +178,7 @@ class MakeRelationManagerCommand extends \Filament\Commands\MakeRelationManagerC
 
         return (string) str(text(
             label: "No resources were found within [{$resourcesNamespace}]. {$question}",
-            placeholder: $this->generatorPreset()->rootNamespace() . 'Filament\\Resources\\Posts\\PostResource',
+            placeholder: $this->generatorPreset()->rootNamespace().'Filament\\Resources\\Posts\\PostResource',
             required: true,
             validate: function (string $value): ?string {
                 $value = (string) str($value)
@@ -189,7 +189,7 @@ class MakeRelationManagerCommand extends \Filament\Commands\MakeRelationManagerC
 
                 return match (true) {
                     ! class_exists($value) => 'The resource class doesn\'t exist, please use the fully-qualified class name.',
-                    ! is_subclass_of($value, Resource::class) => 'The resource class or one of its parents must extend [' . Resource::class . '].',
+                    ! is_subclass_of($value, Resource::class) => 'The resource class or one of its parents must extend ['.Resource::class.'].',
                     default => null,
                 };
             },

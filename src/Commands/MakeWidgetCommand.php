@@ -2,6 +2,9 @@
 
 namespace Joserick\Filament\DevTool\Commands;
 
+use Filament\Widgets\ChartWidget;
+use Filament\Widgets\StatsOverviewWidget;
+use Filament\Widgets\TableWidget;
 use Filament\Widgets\Widget;
 use Joserick\Filament\DevTool\Commands\Concerns\InteractsWithCanvasPreset;
 
@@ -14,17 +17,17 @@ class MakeWidgetCommand extends \Filament\Widgets\Commands\MakeWidgetCommand
     protected function configureType(): void
     {
         $this->type = match (true) {
-            boolval($this->option('chart')) => \Filament\Widgets\ChartWidget::class,
-            boolval($this->option('stats-overview')) => \Filament\Widgets\StatsOverviewWidget::class,
-            boolval($this->option('table')) => \Filament\Widgets\TableWidget::class,
+            boolval($this->option('chart')) => ChartWidget::class,
+            boolval($this->option('stats-overview')) => StatsOverviewWidget::class,
+            boolval($this->option('table')) => TableWidget::class,
             default => $this->input->isInteractive()
                 ? select(
                     label: 'Which type of widget would you like to create?',
                     options: [
                         Widget::class => 'Custom',
-                        \Filament\Widgets\ChartWidget::class => 'Chart',
-                        \Filament\Widgets\StatsOverviewWidget::class => 'Stats overview',
-                        \Filament\Widgets\TableWidget::class => 'Table',
+                        ChartWidget::class => 'Chart',
+                        StatsOverviewWidget::class => 'Stats overview',
+                        TableWidget::class => 'Table',
                     ],
                 )
                 : null,

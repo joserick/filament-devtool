@@ -52,7 +52,7 @@ trait InteractsWithCanvasPreset
         $preset = $this->generatorPreset();
         $pathNamespace = (string) str($path)->replace('/', '\\');
 
-        $namespace = rtrim($preset->rootNamespace(), '\\') . '\\Filament\\' . $pathNamespace;
+        $namespace = rtrim($preset->rootNamespace(), '\\').'\\Filament\\'.$pathNamespace;
         $directory = join_paths($preset->sourcePath(), 'Filament', str_replace('\\', '/', $path));
 
         return [$namespace, $directory, null];
@@ -68,7 +68,7 @@ trait InteractsWithCanvasPreset
         $preset = $this->generatorPreset();
 
         return [
-            rtrim($preset->rootNamespace(), '\\') . '\\Livewire',
+            rtrim($preset->rootNamespace(), '\\').'\\Livewire',
             join_paths($preset->sourcePath(), 'Livewire'),
             null,
         ];
@@ -105,7 +105,7 @@ trait InteractsWithCanvasPreset
 
         $preset = $this->generatorPreset();
 
-        $this->resourcesNamespace = rtrim($preset->rootNamespace(), '\\') . '\\Filament\\Resources';
+        $this->resourcesNamespace = rtrim($preset->rootNamespace(), '\\').'\\Filament\\Resources';
         $this->resourcesDirectory = join_paths($preset->sourcePath(), 'Filament', 'Resources');
     }
 
@@ -120,7 +120,7 @@ trait InteractsWithCanvasPreset
 
         $preset = $this->generatorPreset();
 
-        $this->pagesNamespace = rtrim($preset->rootNamespace(), '\\') . '\\Filament\\Pages';
+        $this->pagesNamespace = rtrim($preset->rootNamespace(), '\\').'\\Filament\\Pages';
         $this->pagesDirectory = join_paths($preset->sourcePath(), 'Filament', 'Pages');
     }
 
@@ -135,7 +135,7 @@ trait InteractsWithCanvasPreset
 
         $preset = $this->generatorPreset();
 
-        $this->widgetsNamespace = rtrim($preset->rootNamespace(), '\\') . '\\Filament\\Widgets';
+        $this->widgetsNamespace = rtrim($preset->rootNamespace(), '\\').'\\Filament\\Widgets';
         $this->widgetsDirectory = join_paths($preset->sourcePath(), 'Filament', 'Widgets');
     }
 
@@ -146,7 +146,7 @@ trait InteractsWithCanvasPreset
     {
         $preset = $this->generatorPreset();
 
-        $this->clustersNamespace = rtrim($preset->rootNamespace(), '\\') . '\\Filament\\Clusters';
+        $this->clustersNamespace = rtrim($preset->rootNamespace(), '\\').'\\Filament\\Clusters';
         $this->clustersDirectory = join_paths($preset->sourcePath(), 'Filament', 'Clusters');
     }
 }

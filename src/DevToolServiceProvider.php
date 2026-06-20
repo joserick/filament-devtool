@@ -87,7 +87,7 @@ class DevToolServiceProvider extends PackageServiceProvider
         $package
             ->name(self::$name)
             ->hasCommands([
-                Commands\BoostSkeletonCommand::class,
+                DevToolCommands\BoostSkeletonCommand::class,
             ]);
     }
 }
