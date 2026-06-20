@@ -23,6 +23,7 @@ class BoostSkeletonCommand extends Command
         $this->mergeComposerDependencies();
         $this->registerPathRepository();
         $this->createSelfVendorSymlink();
+        $this->fixServeScript();
     }
 
     /**
@@ -218,5 +219,52 @@ class BoostSkeletonCommand extends Command
             $path,
             json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
+    }
+
+    /**
+     * Ensure the serve script in composer.json includes --host and --port flags.
+     *
+     * The workbench:devtool command (called by workbench:install) overwrites
+     * the serve script without --host=0.0.0.0 --port=80, which breaks the
+     * Docker container's ability to serve on the correct interface.
+     */
+    private function fixServeScript(): void
+    {
+        if (! defined('TESTBENCH_WORKING_PATH')) {
+            return;
+        }
+
+        $composerPath = TESTBENCH_WORKING_PATH.'/composer.json';
+
+        if (! file_exists($composerPath)) {
+            $this->error('composer.json not found.');
+
+            return;
+        }
+
+        $composer = json_decode(file_get_contents($composerPath), true);
+
+        if (! isset($composer['scripts']['serve'])) {
+            return;
+        }
+
+        $updated = false;
+
+        foreach ($composer['scripts']['serve'] as &$cmd) {
+            if (str_contains($cmd, 'testbench serve') && ! str_contains($cmd, '--host')) {
+                $cmd = str_replace('serve --ansi', 'serve --host=0.0.0.0 --port=80 --ansi', $cmd);
+                $updated = true;
+            }
+        }
+        unset($cmd);
+
+        if ($updated) {
+            file_put_contents(
+                $composerPath,
+                json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n"
+            );
+
+            $this->info('Fixed serve script in composer.json (added --host=0.0.0.0 --port=80).');
+        }
     }
 }
