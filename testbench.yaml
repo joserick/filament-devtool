@@ -1,3 +1,2 @@
 providers:
   - Joserick\Filament\DevTool\DevToolServiceProvider
-  - Filament\FilamentServiceProvider

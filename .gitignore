@@ -4,6 +4,7 @@ _ide_helper.php
 .env.backup
 .env.production
 .mcp.json
+.opencode
 .phpactor.json
 .phpunit.result.cache
 *.log
@@ -25,11 +26,12 @@ _ide_helper.php
 /vendor
 AGENTS.md
 CLAUDE.md
+compose.yml
 composer.lock
 Homestead.json
 Homestead.yaml
 opencode.json
+openspec
 skeleton
 Thumbs.db
 workbench
-compose.yml
