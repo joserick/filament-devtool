@@ -7,4 +7,11 @@ use Joserick\Filament\DevTool\Commands\Concerns\InteractsWithCanvasPreset;
 class MakeImporterCommand extends \Filament\Actions\Commands\MakeImporterCommand
 {
     use InteractsWithCanvasPreset;
+
+    public function handle(): int
+    {
+        $this->input->setOption('model-namespace', rtrim($this->generatorPreset()->modelNamespace(), '\\'));
+
+        return parent::handle();
+    }
 }

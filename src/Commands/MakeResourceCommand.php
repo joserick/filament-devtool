@@ -11,6 +11,9 @@ class MakeResourceCommand extends \Filament\Commands\MakeResourceCommand
 
     public function handle(): int
     {
+        $this->input->setOption('model-namespace', rtrim($this->generatorPreset()->modelNamespace(), '\\'));
+        $this->input->setOption('resource-namespace', rtrim($this->generatorPreset()->rootNamespace(), '\\').'\Filament\Resources');
+
         try {
             $this->configureModel();
             $this->configureRecordTitleAttribute();
