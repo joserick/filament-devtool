@@ -10,7 +10,9 @@ class MakeImporterCommand extends \Filament\Actions\Commands\MakeImporterCommand
 
     public function handle(): int
     {
-        $this->input->setOption('model-namespace', rtrim($this->generatorPreset()->modelNamespace(), '\\'));
+        if (! $this->input->getOption('model-namespace')) {
+            $this->input->setOption('model-namespace', rtrim($this->generatorPreset()->modelNamespace(), '\\'));
+        }
 
         return parent::handle();
     }
